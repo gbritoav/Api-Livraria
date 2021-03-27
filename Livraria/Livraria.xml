@@ -124,5 +124,10 @@
             </summary>
             <param name="id"></param>   
         </member>
+        <member name="M:Livraria.Controllers.TestesController.GetTeste">
+            <summary>
+            Teste
+            </summary>
+        </member>
     </members>
 </doc>

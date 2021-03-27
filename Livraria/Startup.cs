@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Livraria.Model;
 using Microsoft.AspNetCore.Builder;
@@ -30,6 +32,7 @@ namespace Livraria
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContext<Contexto>(Options => Options.UseSqlServer(Configuration.GetConnectionString("ConexaoBD")));
 
             services.AddControllers();
@@ -55,7 +58,13 @@ namespace Livraria
                         Url = new Uri("https://example.com/license"),
                     }
                 });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
+
+         
 
 
         }
@@ -63,6 +72,9 @@ namespace Livraria
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseStaticFiles();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -92,7 +104,8 @@ namespace Livraria
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-               
+                c.RoutePrefix = string.Empty;
+
             });
 
 
