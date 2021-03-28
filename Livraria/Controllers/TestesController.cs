@@ -27,8 +27,8 @@ namespace Livraria.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> GetTeste()
         {
-            var teste2 = _contextoAutor.GetAll();
-            string teste = "Bem vindo " + teste2.First().Nome;
+            //var teste2 = _contextoAutor.GetAll();
+            string teste = "Bem vindo ";// + teste2.First().Nome;
             return new JsonResult(teste);
         }
 
