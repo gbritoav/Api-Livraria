@@ -13,12 +13,12 @@ namespace Livraria.Controllers
     public class TestesController : Controller
     {
 
-        private readonly AutorRepositorio _contextoAutor = new AutorRepositorio();
+        //private readonly AutorRepositorio _contextoAutor = new AutorRepositorio();
 
-        public TestesController(Contexto contexto)
-        {
-            _contextoAutor.Contexto(contexto);
-        }
+        //public TestesController(Contexto contexto)
+        //{
+        //    _contextoAutor.Contexto(contexto);
+        //}
 
 
         /// <summary>
