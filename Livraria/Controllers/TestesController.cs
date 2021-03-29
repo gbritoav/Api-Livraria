@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Livraria.Model;
 using Livraria.Repositorio;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Livraria.Controllers
 {
@@ -13,23 +14,20 @@ namespace Livraria.Controllers
     public class TestesController : Controller
     {
 
-        //private readonly AutorRepositorio _contextoAutor = new AutorRepositorio();
+        private readonly Contexto _context;
 
-        //public TestesController(Contexto contexto)
-        //{
-        //    _contextoAutor.Contexto(contexto);
-        //}
-
+        public TestesController(Contexto context)
+        {
+            _context = context;
+        }
 
         /// <summary>
         /// Teste
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult<string>> GetTeste()
+        public async Task<ActionResult<IEnumerable<Autor>>> GetAutor()
         {
-            //var teste2 = _contextoAutor.GetAll();
-            string teste = "Bem vindo ";// + teste2.First().Nome;
-            return new JsonResult(teste);
+            return await _context.Autor.ToListAsync();
         }
 
     }
