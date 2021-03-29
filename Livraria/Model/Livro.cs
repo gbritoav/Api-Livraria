@@ -15,6 +15,8 @@ namespace Livraria.Model
         [Column("Id")]
         public int Id { get; set; }
 
+
+        [Required(ErrorMessage = "Informe o nome do livro")]
         [Display(Name = "Nome")]
         [Column("Nome")]
         public string Nome { get; set; }
@@ -22,6 +24,7 @@ namespace Livraria.Model
         [Display(Name = "Descricao")]
         [Column("Descricao")]
         public string Descricao { get; set; }
+
 
         [ForeignKey("IdAutor")]
         [Display(Name = "Nome do Autor")]
@@ -38,6 +41,8 @@ namespace Livraria.Model
         [Column("IdCategoria")]
         public int IdCategoria { get; set; }
 
+
+        [Required(ErrorMessage = "Informe preço do livro")]
         [Display(Name = "Preço")]
         [Column("Preco")]
         public Decimal Preco { get; set; }

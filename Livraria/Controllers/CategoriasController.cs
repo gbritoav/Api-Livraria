@@ -22,8 +22,9 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Lista de Categoria
-        /// </summary>
+        /// Método para obter todos os cadastros disponíveis
+        /// </summary>            
+        /// <returns>Retorna uma lista de cadastro</returns>   
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria()
         {
@@ -40,9 +41,12 @@ namespace Livraria.Controllers
 
 
         /// <summary>
-        /// Consultar Categoria
+        /// Método para obter um valor específico
         /// </summary>
-        /// <param name="id"></param> 
+        /// <param name="id">Id do valor que será obtido</param>
+        /// <returns>
+        /// Retorna o valor de acordo com o Id informado
+        /// </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Categoria>> GetCategoria(int id)
         {
@@ -65,10 +69,10 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Alterar Categoria
+        /// Método para alterar um cadastro já salvo
         /// </summary>
-        /// <param name="id"></param> 
-        /// <param name="categoria"></param>     
+        /// <param name="id">Id do cadastros</param> 
+        /// <param name="categoria">Informações da categoria para alteração</param>   
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategoria(int id, Categoria categoria)
         {
@@ -79,7 +83,14 @@ namespace Livraria.Controllers
 
             try
             {
-                _contextoCategoria.Update(categoria);
+                if (ModelState.IsValid)
+                {
+                    _contextoCategoria.Update(categoria);
+                }
+                else
+                {
+                    return NotFound();
+                }
 
             }
             catch (Exception ex)
@@ -91,18 +102,25 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Salvar Categoria
+        /// Método para publicar um cadastro
         /// </summary>
-        /// <param name="categoria"></param>   
+        /// <param name="categoria">Informaçoes do carastro</param>   
         [HttpPost]
         public async Task<ActionResult<Categoria>> PostCategoria(Categoria categoria)
         {
             try
             {
-                _contextoCategoria.Add(categoria);
+                if (ModelState.IsValid)
+                {
+                    _contextoCategoria.Add(categoria);
 
 
-                return CreatedAtAction("GetCategoria", new { id = categoria.Id }, categoria);
+                    return CreatedAtAction("GetCategoria", new { id = categoria.Id }, categoria);
+                }
+                else 
+                {
+                    return categoria;
+                }
             }
             catch (Exception ex)
             {
@@ -112,9 +130,9 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Deletar Autor
+        /// Método para deletar cadastro
         /// </summary>
-        /// <param name="id"></param>   
+        /// <param name="id">Id do cadastros que será deletado</param>   
         [HttpDelete("{id}")]
         public async Task<ActionResult<Categoria>> DeleteAutor(int id)
         {

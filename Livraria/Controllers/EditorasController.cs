@@ -22,8 +22,9 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Lista de Editora
-        /// </summary>
+        /// Método para obter todos os cadastros disponíveis
+        /// </summary>            
+        /// <returns>Retorna uma lista de cadastro</returns>       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Editora>>> GetEditora()
         {
@@ -40,9 +41,12 @@ namespace Livraria.Controllers
 
 
         /// <summary>
-        /// Consultar Editora
+        /// Método para obter um valor específico
         /// </summary>
-        /// <param name="id"></param> 
+        /// <param name="id">Id do valor que será obtido</param>
+        /// <returns>
+        /// Retorna o valor de acordo com o Id informado
+        /// </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Editora>> GetEditora(int id)
         {
@@ -65,10 +69,10 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Alterar Editora
+        /// Método para alterar um cadastro já salvo
         /// </summary>
-        /// <param name="id"></param> 
-        /// <param name="editora"></param>     
+        /// <param name="id">Id do cadastros</param> 
+        /// <param name="editora">Informaçoes do carastro para alteração</param>   
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEditora(int id, Editora editora)
         {
@@ -79,7 +83,14 @@ namespace Livraria.Controllers
 
             try
             {
-                _contextoEditora.Update(editora);
+                if (ModelState.IsValid)
+                {
+                    _contextoEditora.Update(editora);
+                }
+                else
+                {
+                    return NotFound();
+                }
 
             }
             catch (Exception ex)
@@ -91,16 +102,22 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Salvar Editora
+        /// Método para publicar um cadastro
         /// </summary>
-        /// <param name="editora"></param>   
+        /// <param name="editora">Informaçoes da editora para cadastro</param>   
         [HttpPost]
         public async Task<ActionResult<Editora>> PostEditora(Editora editora)
         {
             try
             {
-                _contextoEditora.Add(editora);
-
+                if (ModelState.IsValid)
+                {
+                    _contextoEditora.Add(editora);
+                }
+                else
+                {
+                    return editora;
+                }
 
                 return CreatedAtAction("GetEditora", new { id = editora.Id }, editora);
             }
@@ -111,9 +128,9 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Deletar Autor
+        /// Método para deletar cadastro
         /// </summary>
-        /// <param name="id"></param>   
+        /// <param name="id">Id do cadastros que será deletado</param>   
         [HttpDelete("{id}")]
         public async Task<ActionResult<Editora>> DeleteEditora(int id)
         {

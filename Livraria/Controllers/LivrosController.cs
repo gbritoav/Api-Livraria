@@ -14,23 +14,19 @@ namespace Livraria.Controllers
     [ApiController]
     public class LivrosController : ControllerBase
     {
-        private readonly EditoraRepositorio _contextoEditora = new EditoraRepositorio();
-        private readonly CategoriaRepositorio _contextoCategoria = new CategoriaRepositorio();
-        private readonly AutorRepositorio _contextoAutor = new AutorRepositorio();
+
         private readonly LivroRepositorio _contextoLivro = new LivroRepositorio();
 
         public LivrosController(Contexto contexto)
-        {
-            _contextoEditora.Contexto(contexto);
-            _contextoCategoria.Contexto(contexto);
-            _contextoAutor.Contexto(contexto);
+        { 
             _contextoLivro.Contexto(contexto);
 
         }
 
         /// <summary>
-        /// Lista de Livro
-        /// </summary>
+        /// Método para obter todos os cadastros disponíveis
+        /// </summary>            
+        /// <returns>Retorna uma lista de cadastro</returns>       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Livro>>> GetLivro()
         {
@@ -47,9 +43,11 @@ namespace Livraria.Controllers
 
 
         /// <summary>
-        /// Consultar Livro
+        /// Método para obter um valor específico
         /// </summary>
-        /// <param name="id"></param> 
+        /// <param name="id">Id do valor que será obtido</param>
+        /// <returns>
+        /// Retorna o valor de acordo com o Id informado
         [HttpGet("{id}")]
         public async Task<ActionResult<Livro>> GetLivro(int id)
         {
@@ -71,10 +69,10 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Alterar Livro
+        /// Método para alterar um cadastro já salvo
         /// </summary>
-        /// <param name="id"></param> 
-        /// <param name="livro"></param>     
+        /// <param name="id">Id do cadastros</param> 
+        /// <param name="livro">Informaçoes do carastro para alteração</param>       
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLivro(int id, Livro livro)
         {
@@ -85,7 +83,14 @@ namespace Livraria.Controllers
 
             try
             {
-                _contextoLivro.Update(livro);
+                if (ModelState.IsValid)
+                {
+                    _contextoLivro.Update(livro);
+                }
+                else
+                {
+                    return NotFound();
+                }
 
             }
             catch (Exception ex)
@@ -97,18 +102,25 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Salvar Livro
+        /// Método para publicar um cadastro
         /// </summary>
-        /// <param name="editora"></param>   
+        /// <param name="livroau">Informaçoes do livro para cadastrar</param>   
         [HttpPost]
         public async Task<ActionResult<Livro>> PostLivro(Livro livro)
         {
             try
             {
-                _contextoLivro.Add(livro);
+                if (ModelState.IsValid)
+                {
+                    _contextoLivro.Add(livro);
 
+                    return CreatedAtAction("GetLivro", new { id = livro.Id }, livro);
+                }
+                else
+                {
+                    return livro;
+                }
 
-                return CreatedAtAction("GetLivro", new { id = livro.Id }, livro);
             }
             catch (Exception ex)
             {
@@ -118,9 +130,9 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Deletar Livro
+        /// Método para deletar cadastro
         /// </summary>
-        /// <param name="id"></param>   
+        /// <param name="id">Id do cadastros que será deletado</param>    
         [HttpDelete("{id}")]
         public async Task<ActionResult<Livro>> DeleteLivro(int id)
         {

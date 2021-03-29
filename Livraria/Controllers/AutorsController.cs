@@ -23,8 +23,9 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Lista de Autor
-        /// </summary>
+        /// Método para obter todos os cadastros disponíveis
+        /// </summary>            
+        /// <returns>Retorna uma lista de cadastro</returns>       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Autor>>> GetAutor()
         {
@@ -41,9 +42,12 @@ namespace Livraria.Controllers
 
 
         /// <summary>
-        /// Consultar Autor
+        /// Método para obter um valor específico
         /// </summary>
-        /// <param name="id"></param> 
+        /// <param name="id">Id do valor que será obtido</param>
+        /// <returns>
+        /// Retorna o valor de acordo com o Id informado
+        /// </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Autor>> GetAutor(int id)
         {
@@ -67,10 +71,10 @@ namespace Livraria.Controllers
 
 
         /// <summary>
-        /// Alterar Autor
+        /// Método para alterar um cadastro já salvo
         /// </summary>
-        /// <param name="id"></param> 
-        /// <param name="autor"></param>    
+        /// <param name="id">Id do cadastros</param> 
+        /// <param name="autor">Informações do cadastro para alteração</param>    
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAutor(int id, Autor autor)
         {
@@ -81,7 +85,14 @@ namespace Livraria.Controllers
 
             try
             {
-                _contextoAutor.Update(autor);
+                if (ModelState.IsValid)
+                {
+                    _contextoAutor.Update(autor);
+                }
+                else
+                {
+                    return NotFound();
+                }
               
             }
             catch (Exception ex)
@@ -93,18 +104,25 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Salvar Autor
+        /// Método para publicar um cadastro
         /// </summary>
-        /// <param name="autor"></param>   
+        /// <param name="autor">Informações do autor para cadastrar</param>   
         [HttpPost]
         public async Task<ActionResult<Autor>> PostAutor(Autor autor)
         {
             try
             {
-                _contextoAutor.Add(autor);
+                if (ModelState.IsValid)
+                {
+                    _contextoAutor.Add(autor);
 
 
-                return CreatedAtAction("GetAutor", new { id = autor.Id }, autor);
+                    return CreatedAtAction("GetAutor", new { id = autor.Id }, autor);
+                }
+                else
+                {
+                    return autor;
+                }
             }
             catch (Exception ex)
             {
@@ -114,9 +132,9 @@ namespace Livraria.Controllers
         }
 
         /// <summary>
-        /// Deletar Autor
+        /// Método para deletar cadastro
         /// </summary>
-        /// <param name="id"></param>   
+        /// <param name="id">Id do cadastros que será deletado</param>   
         [HttpDelete("{id}")]
         public async Task<ActionResult<Autor>> DeleteAutor(int id)
         {
