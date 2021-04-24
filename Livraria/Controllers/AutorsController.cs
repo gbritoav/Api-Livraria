@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Livraria.Model;
 using Livraria.Repositorio;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Livraria.Controllers
 {
@@ -17,16 +18,13 @@ namespace Livraria.Controllers
     {
         private readonly AutorRepositorio _contextoAutor = new AutorRepositorio();
 
-        public AutorsController(Contexto contexto)
-        {
-            _contextoAutor.Contexto(contexto);
-        }
-
         /// <summary>
         /// Método para obter todos os cadastros disponíveis
         /// </summary>            
         /// <returns>Retorna uma lista de cadastro</returns>       
         [HttpGet]
+        [Authorize]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<IEnumerable<Autor>>> GetAutor()
         {
             try
@@ -49,6 +47,7 @@ namespace Livraria.Controllers
         /// Retorna o valor de acordo com o Id informado
         /// </returns>
         [HttpGet("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Autor>> GetAutor(int id)
         {
             try
@@ -76,6 +75,7 @@ namespace Livraria.Controllers
         /// <param name="id">Id do cadastros</param> 
         /// <param name="autor">Informações do cadastro para alteração</param>    
         [HttpPut("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<IActionResult> PutAutor(int id, Autor autor)
         {
             if (id != autor.Id)
@@ -108,13 +108,14 @@ namespace Livraria.Controllers
         /// </summary>
         /// <param name="autor">Informações do autor para cadastrar</param>   
         [HttpPost]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Autor>> PostAutor(Autor autor)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _contextoAutor.Add(autor);
+                    _contextoAutor.Save(autor);
 
 
                     return CreatedAtAction("GetAutor", new { id = autor.Id }, autor);
@@ -136,6 +137,7 @@ namespace Livraria.Controllers
         /// </summary>
         /// <param name="id">Id do cadastros que será deletado</param>   
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Autor>> DeleteAutor(int id)
         {
             try
@@ -146,7 +148,7 @@ namespace Livraria.Controllers
                     return NotFound();
                 }
 
-                _contextoAutor.Remove(autor);
+                _contextoAutor.Delete(autor);
                 
 
                 return autor;

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Livraria.Model;
 using Livraria.Repositorio;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Livraria.Controllers
 {
@@ -17,17 +18,13 @@ namespace Livraria.Controllers
 
         private readonly LivroRepositorio _contextoLivro = new LivroRepositorio();
 
-        public LivrosController(Contexto contexto)
-        { 
-            _contextoLivro.Contexto(contexto);
-
-        }
 
         /// <summary>
         /// Método para obter todos os cadastros disponíveis
         /// </summary>            
         /// <returns>Retorna uma lista de cadastro</returns>       
         [HttpGet]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<IEnumerable<Livro>>> GetLivro()
         {
             try
@@ -49,6 +46,7 @@ namespace Livraria.Controllers
         /// <returns>
         /// Retorna o valor de acordo com o Id informado
         [HttpGet("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Livro>> GetLivro(int id)
         {
             try
@@ -74,6 +72,7 @@ namespace Livraria.Controllers
         /// <param name="id">Id do cadastros</param> 
         /// <param name="livro">Informaçoes do carastro para alteração</param>       
         [HttpPut("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<IActionResult> PutLivro(int id, Livro livro)
         {
             if (id != livro.Id)
@@ -106,13 +105,14 @@ namespace Livraria.Controllers
         /// </summary>
         /// <param name="livroau">Informaçoes do livro para cadastrar</param>   
         [HttpPost]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Livro>> PostLivro(Livro livro)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _contextoLivro.Add(livro);
+                    _contextoLivro.Save(livro);
 
                     return CreatedAtAction("GetLivro", new { id = livro.Id }, livro);
                 }
@@ -134,6 +134,7 @@ namespace Livraria.Controllers
         /// </summary>
         /// <param name="id">Id do cadastros que será deletado</param>    
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Livro>> DeleteLivro(int id)
         {
             try
@@ -144,7 +145,7 @@ namespace Livraria.Controllers
                     return NotFound();
                 }
 
-                _contextoLivro.Remove(livro);
+                _contextoLivro.Delete(livro);
 
 
                 return livro;

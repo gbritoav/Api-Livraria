@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Livraria.Model;
 using Livraria.Repositorio;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Livraria.Controllers
 {
@@ -16,16 +17,13 @@ namespace Livraria.Controllers
     {
         private readonly EditoraRepositorio _contextoEditora = new EditoraRepositorio();
 
-        public EditorasController(Contexto contexto)
-        {
-            _contextoEditora.Contexto(contexto);
-        }
 
         /// <summary>
         /// Método para obter todos os cadastros disponíveis
         /// </summary>            
         /// <returns>Retorna uma lista de cadastro</returns>       
         [HttpGet]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<IEnumerable<Editora>>> GetEditora()
         {
             try
@@ -48,6 +46,7 @@ namespace Livraria.Controllers
         /// Retorna o valor de acordo com o Id informado
         /// </returns>
         [HttpGet("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Editora>> GetEditora(int id)
         {
             try
@@ -74,6 +73,7 @@ namespace Livraria.Controllers
         /// <param name="id">Id do cadastros</param> 
         /// <param name="editora">Informaçoes do carastro para alteração</param>   
         [HttpPut("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<IActionResult> PutEditora(int id, Editora editora)
         {
             if (id != editora.Id)
@@ -106,13 +106,14 @@ namespace Livraria.Controllers
         /// </summary>
         /// <param name="editora">Informaçoes da editora para cadastro</param>   
         [HttpPost]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Editora>> PostEditora(Editora editora)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _contextoEditora.Add(editora);
+                    _contextoEditora.Save(editora);
                 }
                 else
                 {
@@ -132,6 +133,7 @@ namespace Livraria.Controllers
         /// </summary>
         /// <param name="id">Id do cadastros que será deletado</param>   
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Editora>> DeleteEditora(int id)
         {
             try
@@ -142,7 +144,7 @@ namespace Livraria.Controllers
                     return NotFound();
                 }
 
-                _contextoEditora.Remove(editora);
+                _contextoEditora.Delete(editora);
 
 
                 return editora;

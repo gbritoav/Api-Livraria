@@ -132,5 +132,48 @@
             </summary>
             <param name="id">Id do cadastros que será deletado</param>    
         </member>
+        <member name="M:Livraria.Controller.UsersController.GetUser">
+            <summary>
+            Método para obter todos os cadastros disponíveis
+            </summary>            
+            <returns>Retorna uma lista de cadastro</returns>       
+        </member>
+        <member name="M:Livraria.Controller.UsersController.GetUser(System.Int32)">
+            <summary>
+            Método para obter um valor específico
+            </summary>
+            <param name="id">Id do valor que será obtido</param>
+            <returns>
+            Retorna o valor de acordo com o Id informado
+            </returns>
+        </member>
+        <member name="M:Livraria.Controller.UsersController.GetLogin(Livraria.Model.User)">
+            <summary>
+            Método para logar
+            </summary>
+            <param name="user">Informações do cadastro para alteração</param>    
+            <returns>
+            Retorna usuario sem senha e o token de acesso
+            </returns>        
+        </member>
+        <member name="M:Livraria.Controller.UsersController.PutUser(System.Int32,Livraria.Model.User)">
+            <summary>
+            Método para alterar um cadastro já salvo
+            </summary>
+            <param name="id">Id do cadastros</param> 
+            <param name="user">Informações do cadastro para alteração</param>    
+        </member>
+        <member name="M:Livraria.Controller.UsersController.PostUser(Livraria.Model.User)">
+            <summary>
+            Método para publicar um cadastro
+            </summary>
+            <param name="user">Informações do usuario para cadastrado</param>   
+        </member>
+        <member name="M:Livraria.Controller.UsersController.DeleteUser(System.Int32)">
+            <summary>
+            Método para deletar cadastro
+            </summary>
+            <param name="id">Id do cadastros que será deletado</param>   
+        </member>
     </members>
 </doc>

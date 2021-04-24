@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Livraria.Model;
 using Livraria.Repositorio;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Livraria.Controllers
 {
@@ -15,17 +16,14 @@ namespace Livraria.Controllers
     public class CategoriasController : ControllerBase
     {
         private readonly CategoriaRepositorio _contextoCategoria = new CategoriaRepositorio();
-
-        public CategoriasController(Contexto contexto)
-        {
-            _contextoCategoria.Contexto(contexto);
-        }
+       
 
         /// <summary>
         /// Método para obter todos os cadastros disponíveis
         /// </summary>            
         /// <returns>Retorna uma lista de cadastro</returns>   
         [HttpGet]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria()
         {
             try
@@ -48,6 +46,7 @@ namespace Livraria.Controllers
         /// Retorna o valor de acordo com o Id informado
         /// </returns>
         [HttpGet("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Categoria>> GetCategoria(int id)
         {
             try
@@ -74,6 +73,7 @@ namespace Livraria.Controllers
         /// <param name="id">Id do cadastros</param> 
         /// <param name="categoria">Informações da categoria para alteração</param>   
         [HttpPut("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<IActionResult> PutCategoria(int id, Categoria categoria)
         {
             if (id != categoria.Id)
@@ -106,13 +106,14 @@ namespace Livraria.Controllers
         /// </summary>
         /// <param name="categoria">Informaçoes do carastro</param>   
         [HttpPost]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Categoria>> PostCategoria(Categoria categoria)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _contextoCategoria.Add(categoria);
+                    _contextoCategoria.Save(categoria);
 
 
                     return CreatedAtAction("GetCategoria", new { id = categoria.Id }, categoria);
@@ -134,6 +135,7 @@ namespace Livraria.Controllers
         /// </summary>
         /// <param name="id">Id do cadastros que será deletado</param>   
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Comun,Adm")]
         public async Task<ActionResult<Categoria>> DeleteAutor(int id)
         {
             try
@@ -144,7 +146,7 @@ namespace Livraria.Controllers
                     return NotFound();
                 }
 
-                _contextoCategoria.Remove(categoria);
+                _contextoCategoria.Delete(categoria);
 
 
                 return categoria;

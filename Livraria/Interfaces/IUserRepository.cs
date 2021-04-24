@@ -1,13 +1,13 @@
-﻿using Livraria.Interface;
+﻿
 using Livraria.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Livraria.Interfaces
+namespace Livraria.Interface
 {
-    public interface ICategoriaRepositorio : IRepositoryReadWrite<Categoria>
+    public interface IUserRepository : IRepositoryReadWrite<User>
     {
     }
 }

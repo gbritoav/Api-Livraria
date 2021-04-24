@@ -1,4 +1,5 @@
-﻿using Livraria.Model;
+﻿using Livraria.Interface;
+using Livraria.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Livraria.Interfaces
 {
-    public interface IAutorRepositorio : IRepositorioBase<Autor>
+    public interface IAutorRepositorio : IRepositoryReadWrite<Autor>
     {
     }
 }
