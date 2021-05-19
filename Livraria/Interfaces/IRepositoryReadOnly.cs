@@ -7,7 +7,6 @@ namespace Livraria.Interface
 {
     public interface IRepositoryReadOnly<T>
     {
-
         IEnumerable<T> GetAll();
         T GetId(int id);
     }
