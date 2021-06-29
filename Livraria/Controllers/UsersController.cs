@@ -20,6 +20,7 @@ namespace Livraria.Controller
 
         // teste
         // teste 2
+        // teste 3
 
         /// <summary>
         /// Método para obter todos os cadastros disponíveis
