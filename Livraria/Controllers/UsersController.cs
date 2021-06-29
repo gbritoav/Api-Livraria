@@ -18,6 +18,7 @@ namespace Livraria.Controller
     {
         private readonly UserRepository _contextoUser = new UserRepository();
 
+        // teste
 
         /// <summary>
         /// Método para obter todos os cadastros disponíveis
