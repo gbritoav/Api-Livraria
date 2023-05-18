@@ -29,12 +29,32 @@ namespace Livraria.Controller
         /// </summary>            
         /// <returns>Retorna uma lista de cadastro</returns>       
         [HttpGet]
-        [Authorize(Roles ="Adm")]
+        //[Authorize(Roles ="Adm")]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
             try
             {
-                return new JsonResult(_contextoUser.GetAll());
+
+                List<User> usuarios = new List<User>();
+
+                User usu = new User();
+
+                usu.Id = 0;
+                usu.Nome = "Gabriel";
+                usu.Senha = "asd";
+                usu.Email = "teste@com";
+
+                User usu2 = new User();
+
+                usu2.Id = 1;
+                usu2.Nome = "Tadeu";
+                usu2.Senha = "123";
+                usu2.Email = "tadeu@yahoo.com.br";
+
+                usuarios.Add(usu);
+                usuarios.Add(usu2);
+
+                return new JsonResult(usuarios);
             }
             catch (Exception ex)
             {
