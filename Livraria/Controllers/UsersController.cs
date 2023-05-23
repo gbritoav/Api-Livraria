@@ -4,10 +4,18 @@ using Livraria.Repository;
 using Livraria.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace Livraria.Controller
@@ -138,7 +146,7 @@ namespace Livraria.Controller
         [HttpGet]
         [Route("authenticated")]
         [Authorize]
-        public string Authenticated() => String.Format("Autenticado - {0}", User.Identity.Name);
+        public string Authenticated() => string.Format("Autenticado - {0}", User.Identity.Name);
 
 
         /// <summary>
@@ -202,6 +210,43 @@ namespace Livraria.Controller
                 return NotFound(ex.InnerException.Message);
             }
         }
+
+        /// <summary>
+        /// Método para publicar um cadastro
+        /// </summary>
+        /// <param name="users">Informações do usuario para cadastrado</param>  
+        [HttpPost("PostUserJson")]
+        public string PostUserJson([FromBody] JsonElement users)
+        {
+            try
+            {
+                var teste = users.GetProperty("values");
+                List<User> list = new List<User>();
+
+                foreach (var item in teste.EnumerateArray())
+                {
+                    list.Add(new User
+                    {
+                        Nome = item.GetProperty("displayName").GetString()
+                    });           
+              
+                }
+
+                string result = "";
+                foreach (var item in list)
+                {
+                    result += "Usuário " + item.Nome + " - atualizado " +"\n";
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message.ToString();
+            }
+        }
+
 
         /// <summary>
         /// Método para deletar cadastro
