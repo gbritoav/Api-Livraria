@@ -220,7 +220,7 @@ namespace Livraria.Controller
         {
             try
             {
-                var teste = users.GetProperty("values");
+                var teste = users.GetProperty("value");
                 List<User> list = new List<User>();
 
                 foreach (var item in teste.EnumerateArray())
